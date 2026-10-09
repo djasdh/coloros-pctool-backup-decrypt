@@ -71,3 +71,33 @@ At the backup root there are also non-container files:
 
 These are written separately by the same module and are not needed to decrypt the per-file
 containers.
+
+## Batched ZIPs
+
+Many entries are **not** the original file but a **batch ZIP** whose members are the real files,
+stored under their **original absolute paths** inside the archive, e.g.:
+
+```
+/storage/emulated/0/DCIM/Camera/IMG20251125023721.jpg
+```
+
+The container's `name`/`path` is then `/DCIM/4_32_2.zip` (a synthetic grouping name). To recover
+the album you must extract these ZIPs and place the members at their inner paths, otherwise the
+gallery only sees the `.zip` files.
+
+Heuristic to tell a backup batch apart from a user-created archive: if every member path starts
+with `/storage/emulated/` (or `/sdcard/`), it is a backup batch — extract it; otherwise it is a
+user archive — keep it as-is.
+
+## Original timestamps
+
+`adb push` / copying resets mtimes to "now", so dates in the gallery will be wrong unless
+restored. The original time is available from two sources:
+
+* **Batch ZIP members** — each entry carries the original `date_time`.
+* **Loose containers** — the JSON header field `lastModifyTime` (Unix seconds).
+
+Apply with `touch -d @<epoch> <file>` (works on-device via toybox `touch`) and re-run a media
+scan so `MediaStore.date_modified` is updated (PNG screenshots without EXIF otherwise show the
+file time, which is now correct).
+
