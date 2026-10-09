@@ -29,6 +29,7 @@ name, path, userId, lastModifyTime, isBaseApk, zipInfo, originPath …`
 ## 快速开始
 
 ```bash
+pip install -r requirements.txt   # 可选：pycryptodome；不装则回退用 openssl 命令行
 python3 decrypt_backup.py --src /备份目录 --out ./restored --pw '<你的备份密码>'
 ```
 

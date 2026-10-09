@@ -31,6 +31,7 @@ md5 (sha256), name, path, userId, lastModifyTime, isBaseApk, zipInfo, originPath
 ## Quick start
 
 ```bash
+pip install -r requirements.txt   # optional: pycryptodome; otherwise the openssl CLI is used
 python3 decrypt_backup.py --src /path/to/backup --out ./restored --pw '<password>'
 ```
 

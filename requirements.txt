@@ -1,0 +1,3 @@
+# Optional. decrypt_backup.py uses pycryptodome if available;
+# otherwise it falls back to the `openssl` command-line tool (no dependency).
+pycryptodome>=3.15
